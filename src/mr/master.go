@@ -15,6 +15,7 @@ type ByKey []KeyValue
 const (
 	Idle      = 0
 	InProcess = 1
+	Finished  = 2
 )
 
 // type TaskStatus int
@@ -36,6 +37,22 @@ type Master struct {
 //
 // the RPC argument and reply types are defined in rpc.go.
 //
+
+func (m *Master) FinishedMap(args *TaskArgs, reply *TaskReply) error {
+	m.mu.Lock()
+	m.logMaps[args.MapTaskNum] = Finished
+	m.fMaps++
+	m.mu.Unlock()
+	return nil
+}
+
+func (m *Master) FinishReduce(args *TaskArgs, reply *TaskReply) error {
+	m.mu.Lock()
+	m.logReduces[args.ReduceTaskNum] = Finished
+	m.fReduce++
+	m.mu.Unlock()
+	return nil
+}
 
 func (m *Master) HandleTask(args *TaskArgs, reply *TaskReply) error {
 	m.mu.Lock()
