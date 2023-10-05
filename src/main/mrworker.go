@@ -10,7 +10,7 @@ package main
 // Please do not change this file.
 //
 
-import "../mr"
+import "github.com/Parsa1378/6.824/mr"
 import "plugin"
 import "os"
 import "fmt"
